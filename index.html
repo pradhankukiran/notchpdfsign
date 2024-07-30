@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Sign PDF | Notch</title>
+		<link rel="stylesheet" href="styles.css" />
+		<link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet" />
+		<link
+			href="https://cdn.prod.website-files.com/6470b7a72717e3daa364db1d/65cf79839b605ce6376e1a12_favicon.svg"
+			rel="shortcut icon"
+			type="image/x-icon"
+		/>
+		<link
+			href="https://cdn.prod.website-files.com/6470b7a72717e3daa364db1d/6489d37ffb06d61af57c9f24_webclipnotch.png"
+			rel="apple-touch-icon"
+		/>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gluten|Kalam|Courgette" />
+	</head>
+
+	<body>
+		<div class="header-container">
+			<div class="logo">
+				<a href="/"
+					><img
+						src="https://cdn.prod.website-files.com/6470b7a72717e3daa364db1d/6470b7a72717e3daa364db63_logo-dark.svg"
+						loading="lazy"
+				/></a>
+			</div>
+
+			<div class="button-container">
+				<button id="reset-btn" class="hidden">Reset</button>
+				<button id="add-sign-btn" class="hidden">Add Signature</button>
+			</div>
+		</div>
+		<div class="heading">
+			<h1>Sign PDF</h1>
+			<h3>
+				Effortlessly sign, send, and succeed: streamline your workflow with our intuitive PDF signing solution. Say goodbye to
+				paperwork and hello to more time for what matters most.
+			</h3>
+		</div>
+
+		<div class="modal-overlay" id="modal-overlay">
+			<div class="modal" id="modal">
+				<button id="type-signature-btn">Type Manually</button>
+				<div class="signature-container" style="display: none">
+					<div class="editable-area" contenteditable="true"></div>
+					<div class="suggestions"></div>
+				</div>
+				<canvas class="signature-canvas" id="signature-canvas" width="500" height="300"></canvas>
+				<div class="button-container">
+					<button id="clear-signature-btn">Clear</button>
+					<button id="save-signature-btn">Add</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="pdf-viewer">
+			<div id="thumbnail-sidebar"></div>
+			<div id="pdf-wrapper">
+				<div id="pdf-container"></div>
+			</div>
+		</div>
+
+		<form class="form-container" enctype="multipart/form-data">
+			<div class="upload-files-container">
+				<div class="drag-file-area">
+					<span class="material-icons-outlined upload-icon"> file_upload </span>
+					<h2 class="dynamic-message">drag & drop any pdf here</h2>
+					<label class="label">
+						<span class="separator">or</span>
+						<span class="browse-files">
+							<input type="file" class="default-file-input" accept="application/pdf" />
+							<span class="browse-files-text">browse pdf</span>
+						</span>
+					</label>
+				</div>
+			</div>
+		</form>
+
+		<button id="download-pdf-btn">Download</button>
+
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
+			integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+		<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"
+			integrity="sha512-z8IYLHO8bTgFqj+yrPyIJnzBDf7DDhWwiEsk4sY+Oe6J2M+WQequeGS7qioI5vT6rXgVRb4K1UVQC5ER7MKzKQ=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.10.27/interact.min.js"
+			integrity="sha512-U7pxMz47PpFp2XkN2CrzPoILVGEwb6dN0o0/gcz6wserNSwnprr4YoVd5QHHWHVVSA+5gCxeh0yZDVy28T91nQ=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+		<script src="script.js"></script>
+	</body>
+</html>
