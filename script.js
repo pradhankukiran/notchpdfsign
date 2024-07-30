@@ -570,7 +570,7 @@ document.getElementById('type-signature-btn').addEventListener('click', function
 	document.querySelector('.suggestions').innerHTML = '';
 	const editableArea = document.querySelector('.editable-area');
 	const suggestions = document.querySelector('.suggestions');
-	const fonts = ['Gluten', 'Kalam', 'Courgette'];
+	const fonts = ['Italianno', 'Zeyada', 'Yellowtail'];
 
 	function debounce(func, wait) {
 		let timeout;
