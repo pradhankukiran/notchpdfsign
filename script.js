@@ -450,6 +450,32 @@ function moveSignatureWithCursor(event) {
 	}
 }
 
+// async function dropSignature(event) {
+// 	if (!currentSignatureDataURL) return;
+
+// 	const canvas = event.target;
+// 	const canvasRect = canvas.getBoundingClientRect();
+// 	const cursorSignature = document.getElementById('cursor-signature');
+
+// 	const signatureWidth = cursorSignature.offsetWidth;
+// 	const signatureHeight = cursorSignature.offsetHeight;
+
+// 	const x = event.clientX - canvasRect.left - signatureWidth / 2;
+// 	const y = event.clientY - canvasRect.top - signatureHeight / 2;
+
+// 	const context = canvas.getContext('2d');
+// 	const signatureImage = new Image();
+// 	signatureImage.src = currentSignatureDataURL;
+
+// 	signatureImage.onload = async function () {
+// 		context.drawImage(signatureImage, x, y, signatureWidth, signatureHeight);
+// 		await saveCanvasToPDF();
+// 	};
+
+// 	removePreviousCursorSignature();
+// 	currentSignatureDataURL = null;
+// }
+
 async function dropSignature(event) {
 	if (!currentSignatureDataURL) return;
 
@@ -469,14 +495,58 @@ async function dropSignature(event) {
 
 	signatureImage.onload = async function () {
 		context.drawImage(signatureImage, x, y, signatureWidth, signatureHeight);
-		await saveCanvasToPDF();
+
+		const pageNumber = canvas.getAttribute('data-page-number');
+		await saveCanvasToPDF(pageNumber);
 	};
 
 	removePreviousCursorSignature();
 	currentSignatureDataURL = null;
 }
 
-async function saveCanvasToPDF() {
+// async function saveCanvasToPDF() {
+// 	const storedPDF = localStorage.getItem('storedPDF');
+// 	if (!storedPDF) {
+// 		alert('No PDF file found.');
+// 		return;
+// 	}
+
+// 	const arrayBuffer = base64ToArrayBuffer(storedPDF);
+
+// 	const pdfLibDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+// 	const pages = pdfLibDoc.getPages();
+
+// 	for (let index = 0; index < pages.length; index++) {
+// 		const canvas = document.querySelector(`.pdf-page-canvas[data-page-number="${index + 1}"]`);
+// 		const imgData = canvas.toDataURL('image/png');
+// 		const { width, height } = canvas;
+
+// 		const img = await pdfLibDoc.embedPng(imgData);
+// 		const page = pages[index];
+
+// 		page.drawImage(img, {
+// 			x: 0,
+// 			y: 0,
+// 			width: page.getWidth(),
+// 			height: page.getHeight(),
+// 		});
+// 	}
+
+// 	const updatedPdfBytes = await pdfLibDoc.save();
+// 	const blob = new Blob([updatedPdfBytes], {
+// 		type: 'application/pdf',
+// 	});
+// 	const url = URL.createObjectURL(blob);
+
+// 	const downloadBtn = document.getElementById('download-pdf-btn');
+// 	downloadBtn.setAttribute('data-url', url);
+// 	downloadBtn.style.display = 'block';
+// 	setTimeout(() => {
+// 		downloadBtn.classList.add('show');
+// 	}, 90);
+// }
+
+async function saveCanvasToPDF(pageNumber) {
 	const storedPDF = localStorage.getItem('storedPDF');
 	if (!storedPDF) {
 		alert('No PDF file found.');
@@ -488,21 +558,19 @@ async function saveCanvasToPDF() {
 	const pdfLibDoc = await PDFLib.PDFDocument.load(arrayBuffer);
 	const pages = pdfLibDoc.getPages();
 
-	for (let index = 0; index < pages.length; index++) {
-		const canvas = document.querySelector(`.pdf-page-canvas[data-page-number="${index + 1}"]`);
-		const imgData = canvas.toDataURL('image/png');
-		const { width, height } = canvas;
+	const canvas = document.querySelector(`.pdf-page-canvas[data-page-number="${pageNumber}"]`);
+	const imgData = canvas.toDataURL('image/png');
+	const { width, height } = canvas;
 
-		const img = await pdfLibDoc.embedPng(imgData);
-		const page = pages[index];
+	const img = await pdfLibDoc.embedPng(imgData);
+	const page = pages[pageNumber - 1];
 
-		page.drawImage(img, {
-			x: 0,
-			y: 0,
-			width: page.getWidth(),
-			height: page.getHeight(),
-		});
-	}
+	page.drawImage(img, {
+		x: 0,
+		y: 0,
+		width: page.getWidth(),
+		height: page.getHeight(),
+	});
 
 	const updatedPdfBytes = await pdfLibDoc.save();
 	const blob = new Blob([updatedPdfBytes], {
@@ -516,6 +584,13 @@ async function saveCanvasToPDF() {
 	setTimeout(() => {
 		downloadBtn.classList.add('show');
 	}, 90);
+
+	const reader = new FileReader();
+	reader.readAsDataURL(blob);
+	reader.onloadend = function () {
+		const base64data = reader.result;
+		localStorage.setItem('storedPDF', base64data.split(',')[1]);
+	};
 }
 
 function enableScrollingWhileDragging() {

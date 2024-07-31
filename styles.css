@@ -1,10 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap');
 
-/* @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap"); */
-
 body {
 	font-family: 'Montserrat', sans-serif;
-	/* font-family: "Open Sans", sans-serif; */
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
@@ -61,6 +58,9 @@ h3 {
 	align-items: center;
 	padding: 10px 0;
 	box-sizing: border-box;
+}
+#pdf-container {
+	position: relative;
 }
 
 #pdf-wrapper {
@@ -527,30 +527,4 @@ h3 {
 
 .suggestion-container input[type='radio']:hover {
 	border-color: #141414;
-}
-.signature-element {
-	position: absolute;
-	cursor: move;
-}
-
-.signature-button {
-	position: absolute;
-	top: -20px;
-	width: 20px;
-	height: 20px;
-	border-radius: 50%;
-	border: none;
-	color: white;
-	font-size: 12px;
-	cursor: pointer;
-}
-
-.confirm-button {
-	right: 25px;
-	background-color: green;
-}
-
-.delete-button {
-	right: 0;
-	background-color: red;
 }
